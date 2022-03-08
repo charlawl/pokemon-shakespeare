@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api", "src\PokemonShakespeare.Api\PokemonShakespeare.Api.csproj", "{6C590C2E-F90C-405E-835E-599AC3FA9F2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api.UnitTests", "test\PokemonShakespeare.Api.UnitTests\PokemonShakespeare.Api.UnitTests.csproj", "{F28B6DF1-F356-42D8-9E31-65BEC08099AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api", "src\PokemonShakespeare.Api\PokemonShakespeare.Api.csproj", "{BA9E1AFC-020C-4B03-A03A-6DD873603237}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C590C2E-F90C-405E-835E-599AC3FA9F2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C590C2E-F90C-405E-835E-599AC3FA9F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C590C2E-F90C-405E-835E-599AC3FA9F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C590C2E-F90C-405E-835E-599AC3FA9F2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F28B6DF1-F356-42D8-9E31-65BEC08099AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F28B6DF1-F356-42D8-9E31-65BEC08099AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F28B6DF1-F356-42D8-9E31-65BEC08099AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F28B6DF1-F356-42D8-9E31-65BEC08099AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

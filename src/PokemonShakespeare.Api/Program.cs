@@ -1,12 +1,14 @@
-using PokemonShakespeare.Api.Services;
-using Microsoft.AspNetCore.Mvc;
+using PokemonShakespeare.Api.Endpoints;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddHttpClient<Translator>();
+var builder = WebApplication.CreateBuilder();
+
+builder.Services.AddTranslationService();
 
 var app = builder.Build();
 
-app.MapGet("/pokemon/{name}", ([FromServices] Translator translator, [FromRoute] string name) 
-    => translator.GetTranslation(name));
+app.MapTranslationEndpoints();
 
 app.Run();
+
+public partial class Program { }
+

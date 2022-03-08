@@ -1,30 +1,27 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build
-WORKDIR /
-COPY ./src/ ./src
-COPY ./nuget.config .
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-RUN dotnet restore ./src/PokemonShakespear.Api/PokemonShakespear.Api.csproj --configfile ./nuget.config
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y \
+        nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /src
+COPY ["src/PokemonShakespeare.Api/PokemonShakespeare.Api.csproj", "PokemonShakespeare.Api/"]
+RUN dotnet restore "src/PokemonShakespeare.Api/PokemonShakespeare.Api.csproj"
 COPY . .
-WORKDIR "/src/PokemonShakespear.Api"
-RUN dotnet build "PokemonShakespear.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/PokemonShakespeare.Api"
+RUN dotnet build "PokemonShakespeare.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PokemonShakespear.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "PokemonShakespeare.Api.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
-
-RUN apk add --update \
-    curl \
-    && rm -rf /var/cache/apk/*
-    
+FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN curl https://s3.amazonaws.com/rds-downloads/rds-ca-2019-eu-west-1.pem --output ./rds-ca-2019-eu-west-1.pem 
-
-EXPOSE 5000
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:5000/_system/health || exit 1
-ENTRYPOINT ["dotnet", "PokemonShakespear.Api.dll"]
+ENTRYPOINT ["dotnet", "PokemonShakespeare.Api.dll"]
