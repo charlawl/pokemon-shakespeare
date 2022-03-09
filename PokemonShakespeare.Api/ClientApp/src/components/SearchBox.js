@@ -25,7 +25,7 @@ export function PokemonSearcher() {
     }
     
     return <div className="wrap">
-            <div className="search">
+            <div data-testid="test-search" className="search">
                 <img id="pokemonLogo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2880px-International_Pok%C3%A9mon_logo.svg.png"/>
                 <form aria-label="A search box that returns Shakespearean description of a Pokemon"
                       aria-required="true" 

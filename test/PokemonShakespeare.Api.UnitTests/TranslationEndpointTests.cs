@@ -4,21 +4,24 @@ namespace PokemonShakespeare.Api.UnitTests;
 
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Models;
+using Moq;
+using Moq.Protected;
 using NSubstitute;
 using Services;
 
 //Testing as outlined by the microsoft docs: https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-6.0
 public class TranslationEndpointTests
 {
-    private readonly ITranslator _translator = Substitute.For<ITranslator>();
-        
     [Theory]
     [InlineData("charmander")]
     [InlineData("Charmander")]
@@ -27,16 +30,35 @@ public class TranslationEndpointTests
     {
         //Arrange
         var pokemonName = name;
-        
-        await using var app = new TranslationEndpointsTestsApp(x =>
+        var description = new TranslationOutput()
         {
-            x.AddSingleton(_translator);
-        });
+            Description = "fallback description",
+            Name = "Charmander",
+            ShakespeareDescription = "Shall I compare thee to a summers day",
+            Sprite = "www.spriteurl.test"
+        };
 
-        var httpClient = app.CreateClient();
-
+        var json = JsonSerializer.Serialize(description);
+        
+        var handlerMock = new Mock<HttpMessageHandler>();
+        var httpResponse = new HttpResponseMessage
+        {
+            StatusCode = HttpStatusCode.OK,
+            Content = new StringContent(json)
+        };
+        
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(httpResponse);
+        
+        var httpClient = new HttpClient(handlerMock.Object);
+        
         //Act
-        var response = await httpClient.GetAsync($"pokemon/{pokemonName}");
+        var response = await httpClient.GetAsync($"http://localhost:5000/pokemon/{pokemonName}");
         var responseText = await response.Content.ReadAsStringAsync();
         var translationResult = JsonSerializer.Deserialize<TranslationOutput>(responseText);
 
@@ -45,6 +67,7 @@ public class TranslationEndpointTests
         translationResult.Should().NotBeNull();
         translationResult.Description.Should().NotBeNull();
         translationResult.Name.Should().Be("Charmander");
+        translationResult.ShakespeareDescription.Should().Be("Shall I compare thee to a summers day");
     }
     
     [Theory]
@@ -55,21 +78,31 @@ public class TranslationEndpointTests
     {
         //Arrange
         var pokemonName = name;
-
-        using var app = new TranslationEndpointsTestsApp(x =>
+        
+        var handlerMock = new Mock<HttpMessageHandler>();
+        var httpResponse = new HttpResponseMessage
         {
-            x.AddSingleton(_translator);
-        });
+            StatusCode = HttpStatusCode.NotFound,
+        };
 
-        var httpClient = app.CreateClient();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(httpResponse);
+        
+        var httpClient = new HttpClient(handlerMock.Object);
 
         //Act
-        var response = await httpClient.GetAsync($"pokemon/{pokemonName}");
+        var response = await httpClient.GetAsync($"http://localhost:5000/pokemon/{pokemonName}");
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+    //I tried using the WebApplicationFactory for testing the endpoints but couldn't quite get it working :(
     internal class TranslationEndpointsTestsApp : WebApplicationFactory<Program>
     {
         private readonly Action<IServiceCollection> _serviceOverride;
