@@ -12,7 +12,7 @@ To develop this app I used
 The app runs in docker. To start run the following commmands:
 
 ### Step 1
-`docker build . -t pokemon-shakespear`
+`docker build . -t pokemon-shakespeare`
 
 ### Step 2
 `docker run -p 5000:80 pokemon-shakespeare`
