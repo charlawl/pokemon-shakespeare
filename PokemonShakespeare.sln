@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api.UnitTests", "test\PokemonShakespeare.Api.UnitTests\PokemonShakespeare.Api.UnitTests.csproj", "{F28B6DF1-F356-42D8-9E31-65BEC08099AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api", "src\PokemonShakespeare.Api\PokemonShakespeare.Api.csproj", "{BA9E1AFC-020C-4B03-A03A-6DD873603237}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonShakespeare.Api", "PokemonShakespeare.Api\PokemonShakespeare.Api.csproj", "{BA9E1AFC-020C-4B03-A03A-6DD873603237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NETCoreWebApplication1", "ASP.NETCoreWebApplication1\ASP.NETCoreWebApplication1.csproj", "{B7C1D6DD-6C0E-4828-B712-344A920900B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9E1AFC-020C-4B03-A03A-6DD873603237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C1D6DD-6C0E-4828-B712-344A920900B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C1D6DD-6C0E-4828-B712-344A920900B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C1D6DD-6C0E-4828-B712-344A920900B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C1D6DD-6C0E-4828-B712-344A920900B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
