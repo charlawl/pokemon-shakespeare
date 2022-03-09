@@ -3,7 +3,6 @@ using Xunit;
 namespace PokemonShakespeare.Api.UnitTests;
 
 using System;
-using System.ComponentModel;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,23 +19,16 @@ public class TranslationEndpointTests
 {
     private readonly ITranslator _translator = Substitute.For<ITranslator>();
         
-    
-    [Fact]
-    public async Task GET_Pokemon_returns_OK_response()
+    [Theory]
+    [InlineData("charmander")]
+    [InlineData("Charmander")]
+    [InlineData("ChARManDeR")]
+    public async Task GET_Pokemon_returns_OK_response(string name)
     {
         //Arrange
-        var pokemonName = "charmander";
-        var description = new TranslationModel()
-        {
-            Description = "fallback description",
-            Name = "charmander",
-            ShakespeareDescription = "Shall I compare thee to a summers day",
-            Sprite = "www.spriteurl.test"
-        };
-
-        _translator.GetTranslation(Arg.Is(pokemonName)).Returns(description);
+        var pokemonName = name;
         
-        using var app = new TranslationEndpointsTestsApp(x =>
+        await using var app = new TranslationEndpointsTestsApp(x =>
         {
             x.AddSingleton(_translator);
         });
@@ -46,19 +38,23 @@ public class TranslationEndpointTests
         //Act
         var response = await httpClient.GetAsync($"pokemon/{pokemonName}");
         var responseText = await response.Content.ReadAsStringAsync();
-        var translationResult = JsonSerializer.Deserialize<TranslationModel>(responseText);
+        var translationResult = JsonSerializer.Deserialize<TranslationOutput>(responseText);
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        //translationResult.Should().BeEquivalentTo(description);
-
+        translationResult.Should().NotBeNull();
+        translationResult.Description.Should().NotBeNull();
+        translationResult.Name.Should().Be("Charmander");
     }
     
-    [Fact]
-    public async Task GET_Pokemon_returns_NotFound_response_if_not_exists()
+    [Theory]
+    [InlineData("hello")]
+    [InlineData("12345")]
+    [InlineData("Not a pokemon")]
+    public async Task GET_Pokemon_returns_NotFound_response_if_not_exists(string name)
     {
         //Arrange
-        var pokemonName = "hello";
+        var pokemonName = name;
 
         using var app = new TranslationEndpointsTestsApp(x =>
         {

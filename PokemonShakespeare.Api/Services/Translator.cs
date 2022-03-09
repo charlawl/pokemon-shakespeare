@@ -7,7 +7,7 @@ using Models;
 
 public interface ITranslator
 {
-    public Task<TranslationModel?> GetTranslation(string pokemonName);
+    public Task<TranslationOutput?> GetTranslation(string pokemonName);
 }
 public class Translator : ITranslator
 {
@@ -22,7 +22,7 @@ public class Translator : ITranslator
         _logger = logger;
     }
     
-    public async Task<TranslationModel?> GetTranslation(string pokemonName)
+    public async Task<TranslationOutput?> GetTranslation(string pokemonName)
     {
         
         var pokemonResponse = await GetPokemonDescription(pokemonName.ToLower()); //API returns 404 with caps
@@ -42,10 +42,10 @@ public class Translator : ITranslator
         
         var translatedDetails = await GetShakespeareDescription(pokemonResponse);
         
-        return new TranslationModel
+        return new TranslationOutput
         {
             Name = pokemonResponse.GetName(),
-            Description = pokemonResponse.GetDescription(),
+            Description = StripFormatting(pokemonResponse.GetDescription()),
             ShakespeareDescription = translatedDetails,
             Sprite = spriteImage
         };
