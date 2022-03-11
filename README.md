@@ -8,6 +8,12 @@ To develop this app I used
 - .NET 6
 - React
 
+### Backend
+I build the API using the new .NET 6 minimal API's which was really interesting as I haven't worked with them before. It allowed me to spin up a fully functional API really quick although I found that testing it wasn't as straight forward as I thought it would be. This seems to be a bit of a consensus with the new minimal API's and was certainly a learning for me here. 
+
+### Frontend
+As I said above this was a first for me. I spent a fair few hours trying to familiarise myself with React fundementals before starting to build anything. I would really welcome a chat about how I went about it and the areas (probably a fair few) in which the code could be improved. I haven't written any tests for this part as I would welcome a discussion around the approach to testing in React. 
+
 ## Running the app
 The app runs in docker. To start run the following commmands:
 
